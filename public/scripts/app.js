@@ -2,160 +2,122 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var Counter = function (_React$Component) {
+  _inherits(Counter, _React$Component);
 
-console.log('App.js is running');
-//JSX
-var app = {
-	title: 'In Decision App',
-	subTitle: 'This is a react app',
-	options: []
-};
+  function Counter(props) {
+    _classCallCheck(this, Counter);
 
-var onFormSubmit = function onFormSubmit(e) {
-	e.preventDefault();
-	var option = e.target.elements.option.value;
-	console.log('entered option', option);
+    var _this = _possibleConstructorReturn(this, (Counter.__proto__ || Object.getPrototypeOf(Counter)).call(this, props));
 
-	if (option) {
-		app.options.push(option);
-		e.target.elements.option.value = "";
-		renderApp();
-	}
-};
+    _this.handleAddOne = _this.handleAddOne.bind(_this);
+    _this.handleMinusOne = _this.handleMinusOne.bind(_this);
+    _this.handleReset = _this.handleReset.bind(_this);
+    _this.state = { count: 0 };
+    console.log(_this.state);
 
-var onMakeDecision = function onMakeDecision() {
-	var number = Math.floor(Math.random() * app.options.length);
-	alert(app.options[number]);
-};
-var visibility = false;
+    return _this;
+  }
 
-var toggleVisibility = function toggleVisibility() {
-	visibility = !visibility;
-	renderApp();
-};
+  _createClass(Counter, [{
+    key: 'handleAddOne',
+    value: function handleAddOne() {
+      this.setState(function (prevState) {
+        return {
+          count: prevState.count + 1
+        };
+      });
 
-var Person = function () {
-	function Person() {
-		var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Anonymous';
-		var age = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      console.log(this.state.count);
+    }
+  }, {
+    key: 'handleMinusOne',
+    value: function handleMinusOne() {
+      this.setState(function (prevState) {
+        return {
+          count: prevState.count - 1
+        };
+      });
+    }
+  }, {
+    key: 'handleReset',
+    value: function handleReset() {
+      this.setState(function () {
+        return {
+          count: 0
+        };
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        null,
+        React.createElement(
+          'h1',
+          null,
+          'Count:',
+          this.state.count,
+          ' '
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.handleAddOne },
+          '+1'
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.handleMinusOne },
+          '-1'
+        ),
+        React.createElement(
+          'button',
+          { onClick: this.handleReset },
+          'reset'
+        )
+      );
+    }
+  }]);
 
-		_classCallCheck(this, Person);
+  return Counter;
+}(React.Component);
 
-		this.name = name;
-		this.age = age;
-	}
+ReactDOM.render(React.createElement(Counter, null), document.getElementById('app'));
 
-	_createClass(Person, [{
-		key: 'getGreetings',
-		value: function getGreetings() {
-			return 'Hi . I am ' + this.name + ' and ' + this.age + ' years old !!!';
-			//return 'Hi. I am '+this.name+' and '+this.age+' years old !!!!'
-		}
-	}]);
+// let count = 0;
+// const addOne = () => {
+//   count++;
+//   renderCounterApp();
+// };
+// const minusOne = () => {
+//   count--;
+//   renderCounterApp();
+// };
+// const reset = () => {
+//   count = 0;
+//   renderCounterApp();
+// };
 
-	return Person;
-}();
+// const appRoot = document.getElementById('app');
 
-//subclasses
+// const renderCounterApp = () => {
+//   const templateTwo = (
+//     <div>
+//       <h1>Count: {count}</h1>
+//       <button onClick={addOne}>+1</button>
+//       <button onClick={minusOne}>-1</button>
+//       <button onClick={reset}>reset</button>
+//     </div>
+//   );
 
+//   ReactDOM.render(templateTwo, appRoot);
+// };
 
-var Student = function (_Person) {
-	_inherits(Student, _Person);
-
-	function Student(name, age, major) {
-		_classCallCheck(this, Student);
-
-		var _this = _possibleConstructorReturn(this, (Student.__proto__ || Object.getPrototypeOf(Student)).call(this, name, age));
-
-		_this.major = major;
-		return _this;
-	}
-
-	_createClass(Student, [{
-		key: 'hasMajor',
-		value: function hasMajor() {
-			return !!this.major;
-		}
-	}]);
-
-	return Student;
-}(Person);
-
-var person1 = new Student('Dayan Perera', 43, 'Maths & Physics');
-console.log(person1);
-console.log(person1.hasMajor());
-var person2 = new Student();
-console.log(person2.hasMajor());
-console.log(person2.getGreetings());
-
-var renderApp = function renderApp() {
-	var i = 0;
-	var template = React.createElement(
-		'div',
-		null,
-		React.createElement(
-			'h1',
-			null,
-			app.title ? app.title : "Title does not exist !!"
-		),
-		app.subTitle && React.createElement(
-			'p',
-			null,
-			app.subTitle
-		),
-		app.options && app.options.length > 0 && React.createElement(
-			'p',
-			null,
-			'Options :',
-			app.options[0],
-			',',
-			app.options[1]
-		),
-		React.createElement(
-			'button',
-			{ disabled: app.options.length === 0, onClick: onMakeDecision },
-			'What Should I Do ? '
-		),
-		React.createElement(
-			'ul',
-			null,
-			app.options.map(function (opt) {
-				i++;
-				return React.createElement(
-					'li',
-					{ key: i },
-					opt
-				);
-			})
-		),
-		React.createElement(
-			'form',
-			{ onSubmit: onFormSubmit },
-			React.createElement('input', { type: 'text', name: 'option' }),
-			React.createElement(
-				'button',
-				null,
-				'Add a option'
-			)
-		),
-		React.createElement(
-			'button',
-			{ onClick: toggleVisibility },
-			visibility ? 'Hide Details' : 'Show Details'
-		),
-		visibility && React.createElement(
-			'h1',
-			null,
-			'Here is the details you expect to see .'
-		)
-	);
-
-	ReactDOM.render(template, document.getElementById("app"));
-};
-
-renderApp();
+// renderCounterApp();

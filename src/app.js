@@ -1,92 +1,96 @@
-console.log('App.js is running');
-//JSX
-const app ={
-	title:'In Decision App',
-	subTitle:'This is a react app',
-	options:[]
-};
-
-const onFormSubmit =(e)=>{
-	e.preventDefault();
-	const option = e.target.elements.option.value;
-	console.log('entered option',option);
-	
-	if(option){
-		app.options.push(option);
-		e.target.elements.option.value ="";
-		renderApp();
-	}
-
-}
-
-const onMakeDecision=()=>{
-	const number = Math.floor((Math.random()*app.options.length));
-	alert(app.options[number]);
-}
-let visibility =false;
-
-const toggleVisibility =()=> {
-	visibility = !visibility;
-	renderApp();
-}
-
-
-class Person {
-	constructor(name='Anonymous',age=0){
-		this.name= name;
-		this.age =age;
-	}
-	getGreetings(){
-		return `Hi . I am ${this.name} and ${this.age} years old !!!`;
-		//return 'Hi. I am '+this.name+' and '+this.age+' years old !!!!'
+class IndecisionApp extends React.Component {
+	render(){
+		const title ="Indecision App...";
+		const subTitle = "Make your day more productive ...";
+		const options =['Option 1','Option 2','Option 4'];
+		return(
+			<div>
+				<Header title={title} subTitle={subTitle}/>
+				<Action/>
+				<Options options={options}/>
+				<AddOptions/>
+			</div>
+		);
 	}
 }
 
-//subclasses
-class Student extends Person{
-	constructor(name,age,major){
-		super(name,age);
-		this.major = major;
-	}
-	hasMajor(){
-		return !!this.major
+class Header extends React.Component {
+	render(){
+		return(
+			<div>
+				<h1>{this.props.title}</h1>
+				<h3>{this.props.subTitle}</h3>
+			</div>
+		); 
 	}
 }
 
-const person1 = new Student('Dayan Perera',43,'Maths & Physics');
-console.log(person1);
-console.log(person1.hasMajor());
-const person2 = new Student();
-console.log(person2.hasMajor());
-console.log(person2.getGreetings());
+class Action extends React.Component {
+	handlePick(){
+		alert("click me");
+	}
 
-const renderApp =() =>{
-	let i=0;
-	const template =(
-		<div>
-			<h1>{app.title ? app.title :"Title does not exist !!"}</h1>
-			{app.subTitle && <p>{app.subTitle}</p>}
-			{(app.options && app.options.length >0)&& <p>Options :{app.options[0]},{app.options[1]}</p>}
-			<button disabled={app.options.length===0} onClick={onMakeDecision}>What Should I Do ? </button>
-			<ul>
-				{
-					app.options.map((opt)=>{
-					i++;
-					return (<li key={i}>{opt}</li>);
-					})
-				}
-			</ul>
-			<form onSubmit={onFormSubmit}>
-				<input type="text" name="option"/>
-				<button>Add a option</button>
-			</form>
-
-			<button onClick={toggleVisibility}>{visibility? 'Hide Details':'Show Details'}</button>
-			{visibility&& <h1>Here is the details you expect to see .</h1>}
-		</div>
+	render(){
+		return(
+			<div>
+				<button onClick={this.handlePick}> What should  I do ?</button>
+			</div>
 		);
 
-	ReactDOM.render(template,document.getElementById("app"));
+	}
 }
 
-renderApp();
+
+class Options extends React.Component{
+	constructor(props){
+		super(props);
+		this.handleRemoveAll =this.handleRemoveAll.bind(this);
+	}
+	handleRemoveAll(){
+		console.log(this.props.options);
+	}
+
+	render(){
+		return(
+			<div>
+				<button onClick={this.handleRemoveAll}>Remove</button>
+				{
+					this.props.options.map((opt)=><Option key={opt} optionText={opt}/>)
+				}
+			</div>
+		);
+	}
+}
+class Option extends React.Component{
+	render(){
+		return(
+			<div>
+				{this.props.optionText}
+			</div>
+		);
+	}
+}
+
+class AddOptions extends React.Component{
+	handleAddOption(event){
+		event.preventDefault();
+		const value = event.target.elements.option.value.trim();
+		if(value){
+			alert(value);
+			event.target.elements.option.value ="";
+		}
+	}
+	
+	render(){
+		return(
+			<div>
+				<form onSubmit={this.handleAddOption}>
+					<input type="text" name="option" placeholder="Enter your Option here"/>
+					<button type="submit"> Add Option</button>
+				</form>
+			</div>
+		);
+	}
+}
+
+ReactDOM.render(<IndecisionApp/>,document.getElementById('app'));
