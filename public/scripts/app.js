@@ -20,18 +20,24 @@ var IndecisionApp = function (_React$Component) {
 		_this.handlePick = _this.handlePick.bind(_this);
 		_this.handleAddOption = _this.handleAddOption.bind(_this);
 		_this.state = {
-			options: []
+			options: props.options
 		};
 		return _this;
 	}
+
+	// handleDeleteOptions(){
+	// 	this.setState(()=>{
+	// 		return {
+	// 			options:[]
+	// 		};
+	// 	});
+	// }
 
 	_createClass(IndecisionApp, [{
 		key: "handleDeleteOptions",
 		value: function handleDeleteOptions() {
 			this.setState(function () {
-				return {
-					options: []
-				};
+				return { options: [] };
 			});
 		}
 	}, {
@@ -49,22 +55,25 @@ var IndecisionApp = function (_React$Component) {
 				return "You can not have dulicate values !";
 			}
 
+			// this.setState((prevState)=>{
+			// 	return{
+			// 		options:prevState.options.concat(option)
+			// 	};
+			// });
+
 			this.setState(function (prevState) {
-				//prevState.options.push(option);
-				return {
-					options: prevState.options.concat(option)
-				};
+				return { options: prevState.options.concat(option) };
 			});
 		}
 	}, {
 		key: "render",
 		value: function render() {
-			var title = "Indecision App...";
-			var subTitle = "Make your day more productive ...";
+			//const subTitle = "Make your day more productive ...";
+			var title = "Indecision App!";
 			return React.createElement(
 				"div",
 				null,
-				React.createElement(Header, { title: title, subTitle: subTitle }),
+				React.createElement(Header, { title: title }),
 				React.createElement(Action, { hasOptions: this.state.options.length > 0,
 					handlePick: this.handlePick }),
 				React.createElement(Options, { options: this.state.options,
@@ -90,12 +99,17 @@ var Header = function Header(props) {
 			null,
 			props.title
 		),
-		React.createElement(
+		props.subTitle && React.createElement(
 			"h3",
 			null,
 			props.subTitle
 		)
 	);
+};
+
+Header.defaultProps = {
+	title: "Indecision App *****",
+	subTitle: "Make your day more productive ..."
 };
 
 //Class Base Components
@@ -210,7 +224,7 @@ var AddOptions = function (_React$Component2) {
 			var value = event.target.elements.option.value.trim();
 			var error = this.props.handleAddOption(value);
 			this.setState(function () {
-				return { error: error };
+				({ error: error });
 			});
 			event.target.elements.option.value = "";
 		}
@@ -241,5 +255,11 @@ var AddOptions = function (_React$Component2) {
 
 	return AddOptions;
 }(React.Component);
+// //set Defalut value
 
-ReactDOM.render(React.createElement(IndecisionApp, null), document.getElementById('app'));
+
+IndecisionApp.defaultProps = {
+	options: []
+};
+
+ReactDOM.render(React.createElement(IndecisionApp, { options: ['San Rafael', 'San Francisco', 'San Jose'] }), document.getElementById('app'));

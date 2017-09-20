@@ -5,16 +5,20 @@ class IndecisionApp extends React.Component {
 		this.handlePick = this.handlePick.bind(this);
 		this.handleAddOption = this.handleAddOption.bind(this);
 		this.state ={
-			options:[]
+			options:props.options
 		}
 	}
 
+	// handleDeleteOptions(){
+	// 	this.setState(()=>{
+	// 		return {
+	// 			options:[]
+	// 		};
+	// 	});
+	// }
+
 	handleDeleteOptions(){
-		this.setState(()=>{
-			return {
-				options:[]
-			};
-		});
+		this.setState(() =>({options:[]}));
 	}
 
 	handlePick(){
@@ -30,20 +34,21 @@ class IndecisionApp extends React.Component {
 			return "You can not have dulicate values !";
 		}
 
-		this.setState((prevState)=>{
-			//prevState.options.push(option);
-			return{
-				options:prevState.options.concat(option)
-			};
-		});
+		// this.setState((prevState)=>{
+		// 	return{
+		// 		options:prevState.options.concat(option)
+		// 	};
+		// });
+
+		this.setState((prevState)=>({options:prevState.options.concat(option)}));
 	}
 
 	render(){
-		const title ="Indecision App...";
-		const subTitle = "Make your day more productive ...";
+		//const subTitle = "Make your day more productive ...";
+		const title = "Indecision App!"
 		return(
 			<div>
-				<Header title={title} subTitle={subTitle}/>
+				<Header title={title} />
 				<Action hasOptions={this.state.options.length>0}
 				handlePick ={this.handlePick}/>
 				<Options options={this.state.options}
@@ -60,10 +65,17 @@ const Header =(props)=> {
 	return(
 		<div>
 			<h1>{props.title}</h1>
-			<h3>{props.subTitle}</h3>
-		</div>
+			{props.subTitle && <h3>{props.subTitle}</h3>}
+			
+		</div> 
+		
 	); 
 }
+
+Header.defaultProps={
+	title:"Indecision App *****",
+	subTitle:"Make your day more productive ..."
+};
 
 //Class Base Components
 // class Header extends React.Component {
@@ -160,9 +172,7 @@ class AddOptions extends React.Component{
 		event.preventDefault();
 		const value = event.target.elements.option.value.trim();
 		const error = this.props.handleAddOption(value);
-		this.setState(()=>{
-			return {error};
-		});
+		this.setState(()=>{({error})});
 		event.target.elements.option.value ="";
 	}
 	
@@ -178,6 +188,9 @@ class AddOptions extends React.Component{
 		);
 	}
 }
+// //set Defalut value
+IndecisionApp.defaultProps ={
+	options:[]
+}
 
-
-ReactDOM.render(<IndecisionApp/>,document.getElementById('app'));
+ReactDOM.render(<IndecisionApp options={['San Rafael','San Francisco','San Jose']}/>,document.getElementById('app'));
