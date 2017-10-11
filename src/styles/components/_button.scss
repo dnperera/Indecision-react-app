@@ -6,9 +6,15 @@
 	color:#fff;
 	font-weight:bold;
 	font-size:$l-size;
-	margin-bottom:$xl-size;
+	margin-bottom:$s-size;
 	padding:2.4rem;
 	width:100%;
+}
+
+@media(min-width:$desktop-breakpoint){
+	.big-button {
+		margin-bottom: $xl-size;
+	}
 }
 
 .big-button:disabled{
